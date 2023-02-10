@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductList from "../product";
 import { useParams, Link } from "react-router-dom";
 import { Row, Col, ListGroup, Button, Image, ListGroupItem } from "react-bootstrap";
 import Rating from '../components/Rating';
+import Toast from "react-hot-toast";
+import axios from "axios";
 
 const ProductDetails = ({ match }) => {
-      let { id } = useParams();
-    const product = ProductList.find((i) => i._id === id)
+    let { id } = useParams();
+    const [ product, setProduct ] = useState({});
+
+    const fetchProduct = async () => {
+      let { data } = await axios.get(`https://yellow-intern-djrqn.ineuron.app:5000/api/products/${id}`);
+      setProduct(data.data);
+      if(data.status === 200) {
+        Toast.success(data.message);
+      }
+      console.log(data);
+    }
+
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
   return (
     <div>
       <Link to="/" className="text-decoration-none"> <i className="fas fa-arrow-left"></i> &nbsp; GO BACK</Link>
