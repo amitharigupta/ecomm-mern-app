@@ -1,28 +1,29 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import Toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 import Products from "./Products";
+import { productList } from "../actions/productActions";
+import Spinner from "../components/Spinner";
+import Message from "../components/Message";
 
 const Home = () => {
-  const [ products, setProducts ] = useState([]);
-
+  // const [ products, setProducts ] = useState([]);
+  const dispatch = useDispatch();
+  const product = useSelector(state => state.productList);
+  const { loading, error, products } = product
   const fetchProducts = async () => {
-    let { data } = await axios.get(`https://yellow-intern-djrqn.ineuron.app:5000/api/products/all`);
-    console.log(data);
-    setProducts(data.data);
-    if(data.status === 200) {
-      Toast.success(data.message);
-    }
-    console.log(data);
+    dispatch(productList())
   }
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
+    {
+      loading ? <Spinner /> : error ? <Message>{error}</Message> : 
       <Row>
         {
           products.map((product) => {
@@ -30,6 +31,7 @@ const Home = () => {
           })
         }
       </Row>
+    }
     </>
   )
 }
