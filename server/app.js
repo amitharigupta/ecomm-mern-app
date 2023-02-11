@@ -12,6 +12,9 @@ dotenv.config();
 // Calling Database connection
 require("./database/index");
 
+// import for global winston logging
+global.logging = require('./utils/logging.utils.js')()
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 

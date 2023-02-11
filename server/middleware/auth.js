@@ -7,7 +7,7 @@ module.exports = {
         try {
             let token = req.headers.authorization || req.body.authorization;
             token = token.split(' ')[1];
-            if (token === 'null') {
+            if (token === 'null' || !token) {
                 return res.status(401).json({ status: 401, message: "Unauthorized Access" });
             }
             else {

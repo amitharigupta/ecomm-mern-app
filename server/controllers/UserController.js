@@ -14,6 +14,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
+// Password Hashing using bcrypt library
 async function hashPassword(password) {
     let hashPassword = await bcrypt.hash(password, saltRounds);
     return hashPassword;
@@ -22,13 +23,14 @@ async function hashPassword(password) {
 async function comparePassword(password, hashPassword) {
     return bcrypt.compare(password, hashPassword);
 }
+// End of Password Hashing using bcrypt library
 
 module.exports = {
     register: async (req, res, next) => {
         try {
             let { name, email, password, cpassword } = req.body;
 
-            logging.info('UserController : register : ' + req.body);
+            logging.info('UserController : register : body ' + req.body);
 
             if (!name || !email || !password || !cpassword) {
                 return res.status(422).json({ status: 422, message: "Fill all Details" });
@@ -58,13 +60,15 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ status: 500, message: "Internal Server Error" })
+            logging.info('UserController : register : Error : ' + error);
+            return res.status(500).json({ status: 500, message: "Internal Server Error" });
         }
     },
 
     login: async (req, res, next) => {
         try {
             let { email, password } = req.body;
+            console.log(email, password);
 
             logging.info('UserController : login : ' + JSON.stringify(req.body));
 
@@ -99,6 +103,8 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
+            logging.info('UserController : login : Error : ' + error);
+            return res.status(500).json({ status: 500, message: "Internal Server Error" });
         }
     },
 
@@ -111,8 +117,8 @@ module.exports = {
             } else {
                 return res.status(401).json({ status: 401, message: "Not a valid User" });
             }
-
         } catch (error) {
+            logging.info('UserController : validUser : Error : ' + error);
             return res.json({ status: 500, message: "Internal Server Error" });
         }
     },
@@ -134,6 +140,7 @@ module.exports = {
             }
 
         } catch (error) {
+            logging.info('UserController : logout : Error : ' + error);
             return res.json({ status: 500, message: "Internal Server Error" });
         }
     },
@@ -180,6 +187,7 @@ module.exports = {
 
             }
         } catch (error) {
+            logging.info('UserController : sendPasswordLink : Error : ' + error);
             return res.json({ status: 500, message: "Internal Server Error" });
         }
     },
@@ -204,6 +212,7 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
+            logging.info('UserController : forgotPassword : Error : ' + error);
             return res.json({ status: 500, message: "Internal Server Error" });
         }
     },
@@ -235,6 +244,7 @@ module.exports = {
                 return res.status(200).json({ status: 401, message: "Error while vaildating" });
             }
         } catch (error) {
+            logging.info('UserController : updatePassword : Error : ' + error);
             return res.json({ status: 500, message: "Internal Server Error" });
         }
     }
