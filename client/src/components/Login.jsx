@@ -12,17 +12,17 @@ const Login = () => {
 
   // Dispatch
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => { console.log(state); return state.userLogin } );
+  const userLogin = useSelector((state) => state.userLogin );
 
   console.log(userLogin);
+  
   const { loading, error, userInfo } = userLogin;
 
   useEffect(() => {
     if(userInfo) {
-      localStorage.setItem("token", userInfo.token);
       setInpVal({ ...inpVal, email: "", password: "" });
-      Toast.success(data.message);
-      history('/dashboard');
+      Toast.success("User logged in scuccessfully");
+      history('/');
     }
   }, [history, userInfo]);
 

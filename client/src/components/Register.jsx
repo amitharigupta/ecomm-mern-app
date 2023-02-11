@@ -37,19 +37,19 @@ const Register = () => {
     } else if (password !== cpassword) {
       Toast.error("Password and Confirm Password must be same");
     } else {
-      let response = await fetch(`https://lemon-carpenter-pevmg.ineuron.app:5000` + '/users/register', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(inpVal)
-      });
-      let data  = await response.json();
-      if(data.status === 201) {
-        Toast.success(data.message);
-      } else {
-        Toast.error(data.message);
-      }
+      // let response = await fetch(`https://lemon-carpenter-pevmg.ineuron.app:5000` + '/users/register', {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify(inpVal)
+      // });
+      // let data  = await response.json();
+      // if(data.status === 201) {
+      //   Toast.success(data.message);
+      // } else {
+      //   Toast.error(data.message);
+      // }
     }
   }
 

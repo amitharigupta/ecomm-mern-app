@@ -6,6 +6,7 @@ var logger = require('morgan');
 const dotenv = require("dotenv");
 const colors = require("colors");
 const helmet = require('helmet');
+const cors = require("cors");
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 app.use(helmet());
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
