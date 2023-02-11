@@ -1,0 +1,1 @@
+export const BACKEND_API_URL = "https://yellow-intern-djrqn.ineuron.app:5000/api";
