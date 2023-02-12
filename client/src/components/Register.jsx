@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { NavLink, useNavigate } from "react-router-dom";
 import Toast from "react-hot-toast";
 import PasswordStrengthBar from 'react-password-strength-bar';
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../actions/userActions";
 
 const Register = () => {
+  const history = useNavigate();
   const [passShow, setPassShow] = useState(false);
   const [cpassShow, setcPassShow] = useState(false);
 
@@ -14,6 +17,19 @@ const Register = () => {
     cpassword: ""
   });
 
+  // Dispatch
+  const dispatch = useDispatch();
+  const registerUser = useSelector((state) => state.userRegister );
+  
+  const { loading, error, userInfo } = registerUser;
+
+  useEffect(() => {
+    if(userInfo) {
+      setInpVal({ ...inpVal, name: "", email: "", password: "", cpassword: "" });
+      Toast.success("User logged in scuccessfully");
+      history('/');
+    }
+  }, [history, userInfo]);
 
   const setVal = (e) => {
     const {name, value} = e.target;
@@ -37,6 +53,7 @@ const Register = () => {
     } else if (password !== cpassword) {
       Toast.error("Password and Confirm Password must be same");
     } else {
+      dispatch(register(name, email, password, cpassword));
       // let response = await fetch(`https://lemon-carpenter-pevmg.ineuron.app:5000` + '/users/register', {
       //   method: "POST",
       //   headers: {

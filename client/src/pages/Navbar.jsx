@@ -8,7 +8,6 @@ const Navbar = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  console.log(userInfo);
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -69,7 +68,7 @@ const Navbar = () => {
                   </li>
                   <li className="nav-item">
                     <NavLink className="nav-link" to="/register">
-                      <i className="fa-solid fa-user"></i> Signin
+                      <i className="fa-solid fa-user"></i> Register
                     </NavLink>
                   </li>
                 </>

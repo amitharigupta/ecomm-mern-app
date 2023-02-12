@@ -7,6 +7,8 @@ router.post('/register', UserController.register);
 
 router.post('/login', UserController.login);
 
+router.patch('/updateprofile', authMiddleWare.authenticate, UserController.updateUserProfile);
+
 router.get('/validuser', authMiddleWare.authenticate, UserController.validUser);
 
 router.post('/logout', authMiddleWare.authenticate, UserController.logout)

@@ -25,12 +25,17 @@ async function comparePassword(password, hashPassword) {
 }
 // End of Password Hashing using bcrypt library
 
+async function generateToken(payload) {
+    let token = await jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "1h" });
+    return token;
+}
+
 module.exports = {
     register: async (req, res, next) => {
         try {
             let { name, email, password, cpassword } = req.body;
 
-            logging.info('UserController : register : body ' + req.body);
+            logging.info('UserController : register : body ' + JSON.stringify(req.body));
 
             if (!name || !email || !password || !cpassword) {
                 return res.status(422).json({ status: 422, message: "Fill all Details" });
@@ -53,7 +58,7 @@ module.exports = {
             const finalUser = new UserModel(userObj);
             const saveUser = await finalUser.save();
             if (saveUser) {
-                return res.status(201).json({ status: 201, message: "User Created Successfully" });
+                return res.status(201).json({ status: 201, message: "User Created Successfully", data: saveUser });
             } else {
                 return res.status(401).json({ status: 401, message: "Error While creating user" });
             }
@@ -242,6 +247,30 @@ module.exports = {
                 return res.status(201).json({ status: 201, message: "Password updated successfully"});
             } else {
                 return res.status(200).json({ status: 401, message: "Error while vaildating" });
+            }
+        } catch (error) {
+            logging.info('UserController : updatePassword : Error : ' + error);
+            return res.json({ status: 500, message: "Internal Server Error" });
+        }
+    },
+
+    updateUserProfile: async(req, res, next) => {
+        try {
+            let { name, email } = req.body;
+            const user = await UserModel.findById(req.user._id);
+
+            if(user) {
+                user.name = name || user.name;
+                user.email = email || user.email;
+
+                const finalUser = new UserModel(user);
+                let updatedUser = await finalUser.save();
+
+                updatedUser = { ...updatedUser, token: generateToken(user) };
+
+                return res.status(200).json({ status: 200, message: "User updated successfully", data: updatedUser });
+            } else {
+
             }
         } catch (error) {
             logging.info('UserController : updatePassword : Error : ' + error);

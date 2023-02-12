@@ -9,6 +9,7 @@ import Register from "./components/Register";
 
 import { Routes, Route } from "react-router-dom";
 import ProductDetails from './pages/ProductDetails';
+import Profile from './pages/Profile';
 import Cart from './pages/Cart';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/cart/:id?" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Container>
     </main>

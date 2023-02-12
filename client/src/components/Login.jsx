@@ -14,7 +14,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin );
 
-  console.log(userLogin);
+  // console.log(userLogin);
   
   const { loading, error, userInfo } = userLogin;
 
