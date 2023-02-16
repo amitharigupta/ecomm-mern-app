@@ -11,6 +11,7 @@ import { Routes, Route } from "react-router-dom";
 import ProductDetails from './pages/ProductDetails';
 import Profile from './pages/Profile';
 import Cart from './pages/Cart';
+import Product from './pages/Product.jsx';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/product" element={<Product />} />
         </Routes>
       </Container>
     </main>

@@ -42,11 +42,17 @@ const Navbar = () => {
                   <i className="fa-solid fa-house"></i> Home
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/product">
+              {
+                userInfo?.isAdmin === true ? (
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/product">
                   <i className="fa-brands fa-product-hunt"></i> Product
-                </NavLink>
+                </NavLink>  
               </li>
+                ) : (
+                  <></>
+                )
+              }
               <li className="nav-item">
                 <NavLink className="nav-link" to="/cart">
                   <i className="fa-solid fa-cart-shopping"></i> Cart

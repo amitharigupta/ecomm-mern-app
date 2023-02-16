@@ -29,6 +29,11 @@ const userSchema = new mongoose.Schema({
     },
     verifytoken: {
         type: String,
+    },
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, { timestamps: true} )
 

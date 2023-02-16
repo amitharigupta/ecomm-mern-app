@@ -100,7 +100,8 @@ module.exports = {
                 res.cookie("usercookie", token, {
                     expiresIn: new Date(Date.now() + 9000000),
                     httpOnly: true
-                })
+                });
+                payload = { ...payload, isAdmin: userExist.isAdmin };
                 return res.json({ status: 200, message: "User logged in successfully", data: { ...payload, token } });
             } else {
                 return res.json({ status: 400, message: "Error while loggin in" });

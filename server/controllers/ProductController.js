@@ -1,4 +1,12 @@
 const ProductModel = require("../models/product.models");
+const BrandModel = require("../models/brand.models");
+const CategoryModel = require("../models/category.models");
+const responseHelper = require("./helper/responseHelper");
+
+// image storage config
+var imgConfig = {
+  
+}
 
 module.exports = {
   getAllProducts: async (req, res, next) => {
@@ -49,6 +57,31 @@ module.exports = {
 
   createProduct: async (req, res, next) => {
     try {
+
+      let { brandId, categoryId } = req.body;
+      let user = req.userId;
+
+      let brandExist = await BrandModel.findById(brandId);
+
+      if(!brandExist) {
+        return res.status(404).json(responseHelper.error(404, "Brand name not found"));
+      }
+
+      let categoryExist = await CategoryModel.findById(categoryId);
+
+      if(!categoryExist) {
+        return res.status(404).json(responseHelper.error(404, "Category name not found"));
+      }
+      
+      let productObj = new ProductModel({ ...req.body, user })
+
+      let product = await productObj.save();
+
+      if(product) {
+        return res.status(201).json(responseHelper.successWithResult(201, "Product Created Successfully", ));
+      } else {
+        return res.status(401).json(responseHelper.error(401, "Error while creating product"));
+      }
     } catch (error) {
       console.log(error);
       return res
