@@ -65,6 +65,11 @@ const productSchema = new mongoose.Schema({
         maxLength: [4, "Stock cannot exceed 4 characters"],
         min: 0,
         default: 1
+    },
+    isActive: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 }, { timestamps: true })
 

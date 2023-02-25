@@ -13,6 +13,7 @@ const Register = () => {
   const [inpVal, setInpVal] = useState({
     name: "",
     email: "",
+    contact: "",
     password: "",
     cpassword: ""
   });
@@ -25,7 +26,7 @@ const Register = () => {
 
   useEffect(() => {
     if(userInfo) {
-      setInpVal({ ...inpVal, name: "", email: "", password: "", cpassword: "" });
+      setInpVal({ ...inpVal, name: "", email: "", contact: "", password: "", cpassword: "" });
       Toast.success("User logged in scuccessfully");
       history('/');
     }
@@ -38,12 +39,14 @@ const Register = () => {
 
   const addUserData = async (e) => {
     e.preventDefault();
-    const { name, email, password, cpassword } = inpVal;
+    const { name, email, contact, password, cpassword } = inpVal;
 
     if(name === "") {
       Toast.error("Please Enter Name");
     } else if (email === "") {
       Toast.error("Please Enter Email");
+    } else if (contact === "") {
+      Toast.error("Please Enter Contact");
     } else if (!email.includes("@")) {
       Toast.error("Please Enter Valid Email");
     } else if (password === "") {
@@ -53,7 +56,7 @@ const Register = () => {
     } else if (password !== cpassword) {
       Toast.error("Password and Confirm Password must be same");
     } else {
-      dispatch(register(name, email, password, cpassword));
+      dispatch(register(name, email, contact, password, cpassword));
     }
   }
 
@@ -76,6 +79,10 @@ const Register = () => {
               <div className="mb-3 form-input">
                 <label htmlFor="email" className="form-label">Email</label>
                 <input type="email" className="form-control" value={inpVal.email} onChange={setVal} id="email" name="email" placeholder="Enter Email" />
+              </div>
+              <div className="mb-3 form-input">
+                <label htmlFor="contact" className="form-label">Contact</label>
+                <input type="contact" className="form-control" value={inpVal.contact} onChange={setVal} id="contact" name="contact" placeholder="Enter Contact" />
               </div>
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">Password</label>

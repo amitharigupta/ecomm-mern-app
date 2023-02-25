@@ -24,16 +24,17 @@ async function generateToken(payload) {
 module.exports = {
     register: async (req, res, next) => {
         try {
-            let { name, email, password, cpassword } = req.body;
-            const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-                folder: "avatars",
-                width: 150,
-                crop: "scale"
-            });
+            let { name, email, password, cpassword, contact } = req.body;
+            // console.log(req.body);
+            // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+            //     folder: "avatars",
+            //     width: 150,
+            //     crop: "scale"
+            // });
 
             logging.info('UserController : register : body ' + JSON.stringify(req.body));
 
-            if (!name || !email || !password || !cpassword) {
+            if (!name || !email || !contact || !password || !cpassword) {
                 return res.status(422).json({ status: 422, message: "Fill all Details" });
             }
 
@@ -47,26 +48,27 @@ module.exports = {
             let userObj = {
                 name,
                 email,
+                contact,
                 password,
                 cpassword,
-                avatar: {
-                    public_id: myCloud.public_id,
-                    url: myCloud.secure_url
-                }
+                // avatar: {
+                //     public_id: myCloud.public_id,
+                //     url: myCloud.secure_url
+                // }
             }
-
+            // console.log(userObj);
             const finalUser = new UserModel(userObj);
             const saveUser = await finalUser.save();
             if (saveUser) {
                 return res.status(201).json({ status: 201, message: "User Created Successfully", data: saveUser });
             } else {
-                return res.status(401).json({ status: 401, message: "Error While creating user" });
+                return res.status(401).send({ status: 401, message: "Error While creating user" });
             }
 
         } catch (error) {
             console.log(error);
-            logging.info('UserController : register : Error : ' + error);
-            return res.status(500).json({ status: 500, message: "Internal Server Error" });
+            logging.info('UserController : register : Error : ' + JSON.stringify(error));
+            return res.status(500).json({ status: 500, message: error.message || "Internal Server Error" });
         }
     },
 

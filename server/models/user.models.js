@@ -12,6 +12,12 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
+    contact: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
     password: {
         type: String,
         required: true,
@@ -35,7 +41,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: false
     }
-}, { timestamps: true} )
+}, { timestamps: true })
 
 const UserModel = new mongoose.model("users", userSchema)
 
