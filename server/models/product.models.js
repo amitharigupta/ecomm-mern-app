@@ -21,10 +21,18 @@ const productSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    image: {
-        type: String,
-        required: true
-    },
+    images: [
+        {
+            public_id: {
+                type: String,
+                required: true,
+            },
+            url: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
     description: {
         type: String,
         required: true,
@@ -47,15 +55,18 @@ const productSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        required: true,
+        required: [true, "Please Enter product Price"],
+        maxLength: [8, "Price cannot exceed 8 characters"],
         min: 100
     },
     countInStock: {
         type: Number,
-        required: true,
-        min: 0
+        required: [true, "Please Enter product Stock"],
+        maxLength: [4, "Stock cannot exceed 4 characters"],
+        min: 0,
+        default: 1
     }
-}, { timestamps: true} )
+}, { timestamps: true })
 
 const ProductModel = new mongoose.model("products", productSchema)
 

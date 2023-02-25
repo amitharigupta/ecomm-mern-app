@@ -1,7 +1,7 @@
 const products = [
     {
         name: "Boat Airdrops 121v2 TWS Earbud",
-        image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.indiamart.com%2Fproddetail%2Fmobile-accessories-all-type-of-mobile-phone-accessories-all-type-of-mobile-electronics-parts-26741985655.html&psig=AOvVaw21gl1t00XKJvPVpl9QpS-T&ust=1676094893808000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOidwJmiiv0CFQAAAAAdAAAAABAD",
+        images: [{ public_id: "Sample Image", url: "https://yellow-intern-djrqn.ineuron.app:5173/images/camera2.jpeg" }],
         description: "This is a Boat company product. These products are really good in use.",
         brand: "1",
         category: "2",
@@ -12,7 +12,7 @@ const products = [
     },
     {
         name: "Samsung Airdrops",
-        image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.indiamart.com%2Fproddetail%2Fmobile-accessories-all-type-of-mobile-phone-accessories-all-type-of-mobile-electronics-parts-26741985655.html&psig=AOvVaw21gl1t00XKJvPVpl9QpS-T&ust=1676094893808000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOidwJmiiv0CFQAAAAAdAAAAABAD",
+        images: [{ public_id: "Sample Image", url: "https://yellow-intern-djrqn.ineuron.app:5173/images/camera2.jpeg" }],
         description: "This is a Samsung company product. These products are really good in use.",
         brand: "2",
         category: "2",
@@ -23,7 +23,7 @@ const products = [
     },
     {
         name: "Micromax A1 mobile",
-        image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.indiamart.com%2Fproddetail%2Fmobile-accessories-all-type-of-mobile-phone-accessories-all-type-of-mobile-electronics-parts-26741985655.html&psig=AOvVaw21gl1t00XKJvPVpl9QpS-T&ust=1676094893808000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOidwJmiiv0CFQAAAAAdAAAAABAD",
+        images: [{ public_id: "Sample Image", url: "https://yellow-intern-djrqn.ineuron.app:5173/images/camera2.jpeg" }],
         description: "This is a Micromax company product. These products are really good in use.",
         brand: "2",
         category: "1",
@@ -34,7 +34,7 @@ const products = [
     },
     {
         name: "Lava Tiger Mobile",
-        image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.indiamart.com%2Fproddetail%2Fmobile-accessories-all-type-of-mobile-phone-accessories-all-type-of-mobile-electronics-parts-26741985655.html&psig=AOvVaw21gl1t00XKJvPVpl9QpS-T&ust=1676094893808000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOidwJmiiv0CFQAAAAAdAAAAABAD",
+        images: [{ public_id: "Sample Image", url: "https://yellow-intern-djrqn.ineuron.app:5173/images/camera2.jpeg" }],
         description: "This is a Lava company product. These products are really good in use.",
         brand: "2",
         category: "3",
@@ -45,7 +45,7 @@ const products = [
     },
     {
         name: "Apple",
-        image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.indiamart.com%2Fproddetail%2Fmobile-accessories-all-type-of-mobile-phone-accessories-all-type-of-mobile-electronics-parts-26741985655.html&psig=AOvVaw21gl1t00XKJvPVpl9QpS-T&ust=1676094893808000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOidwJmiiv0CFQAAAAAdAAAAABAD",
+        images: [{ public_id: "Sample Image", url: "https://yellow-intern-djrqn.ineuron.app:5173/images/camera2.jpeg" }],
         description: "This is a Apple company product. These products are really good in use.",
         brand: "1",
         category: "2",

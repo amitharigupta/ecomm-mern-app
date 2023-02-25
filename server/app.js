@@ -7,11 +7,21 @@ const dotenv = require("dotenv");
 const colors = require("colors");
 const helmet = require('helmet');
 const cors = require("cors");
+const fileupload = require("express-fileupload");
+
+// For image storage
+const cloudinary = require("cloudinary");
 
 dotenv.config();
 
 // Calling Database connection
 require("./database/index");
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
+})
 
 // import for global winston logging
 global.logging = require('./utils/logging.utils.js')()
@@ -33,6 +43,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileupload());
 
 app.use('/api', indexRouter);
 app.use('/api/users', usersRouter);

@@ -54,19 +54,6 @@ const Register = () => {
       Toast.error("Password and Confirm Password must be same");
     } else {
       dispatch(register(name, email, password, cpassword));
-      // let response = await fetch(`https://lemon-carpenter-pevmg.ineuron.app:5000` + '/users/register', {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify(inpVal)
-      // });
-      // let data  = await response.json();
-      // if(data.status === 201) {
-      //   Toast.success(data.message);
-      // } else {
-      //   Toast.error(data.message);
-      // }
     }
   }
 

@@ -2,17 +2,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const UserModel = require("../models/user.models.js");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
-
-// Email Config
-
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.MAIL_USER || "amitgt9967@gmail.com",
-        pass: process.env.MAIL_PASSWORD || "1234567",
-    }
-})
+const cloudinary = require("cloudinary");
+const { sendEmail } = require("../utils/mail.utils");
 
 // Password Hashing using bcrypt library
 async function hashPassword(password) {
@@ -34,6 +25,11 @@ module.exports = {
     register: async (req, res, next) => {
         try {
             let { name, email, password, cpassword } = req.body;
+            const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+                folder: "avatars",
+                width: 150,
+                crop: "scale"
+            });
 
             logging.info('UserController : register : body ' + JSON.stringify(req.body));
 
@@ -52,7 +48,11 @@ module.exports = {
                 name,
                 email,
                 password,
-                cpassword
+                cpassword,
+                avatar: {
+                    public_id: myCloud.public_id,
+                    url: myCloud.secure_url
+                }
             }
 
             const finalUser = new UserModel(userObj);
@@ -159,8 +159,8 @@ module.exports = {
             }
 
             let user = await UserModel.findOne({ email });
-            if(!user) {
-                return res.status(200).json({ status: 400, message: "User Not Found" });
+            if (!user) {
+                return res.status(404).json({ status: 404, message: "User Not Found" });
             }
 
             // Token creation for password reset
@@ -168,27 +168,29 @@ module.exports = {
                 name: user.name,
                 email: user.email
             }
-            let token = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "60s" });
+            let token = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRY_IN || "60s" });
 
-            const setUserToken = await UserModel.findByIdAndUpdate({ _id: user._id}, { verifytoken: token }, { new: true });
-            let textMessage = `This link is valid for 2 mins https://gray-plumber-wbhna.ineuron.app:5173/forgot-password/${user._id}`;
-            if(setUserToken) {
+            const setUserToken = await UserModel.findByIdAndUpdate({ _id: user._id }, { verifytoken: token }, { new: true });
+            // console.log(req);
+            let textMessage = `Dear User, \n\nThis link is valid for 2 mins ${req.protocol}://${req.hostname}:${process.env.FRONTEND_PORT}/forgot-password/${user._id}.\n\n If you have not requested for this email then please ignore it.`;
+            if (setUserToken) {
                 const mailOptions = {
-                    from : process.env.MAIL_USER,
-                    to : user.email,
-                    subject: `Sending Email For Password Reset`,
+                    from: process.env.SMTP_MAIL_USER,
+                    to: user.email,
+                    subject: `Amazon App Password Reset - Sending Email For Password Reset`,
                     text: textMessage
                 }
-                console.log(mailOptions.text)
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if(error) { 
-                        console.log("Error: ", error); 
-                        return res.status(401).json({ status: 401, message: "Email not send" });
-                    } else {
-                        console.log("Email Sent");
-                        return res.status(201).json({ status: 201, message: "Email sent successfully" });
-                    }
-                })
+                console.log(mailOptions.text);
+
+                let isEmailSended = await sendEmail(mailOptions);
+                console.log(isEmailSended);
+                if (!isEmailSended) {
+                    console.log("Error: ", error);
+                    return res.status(401).json({ status: 401, message: "Email not send" });
+                } else {
+                    console.log("Email Sent");
+                    return res.status(201).json({ status: 201, message: "Email sent successfully" });
+                }
             } else {
 
             }
@@ -203,14 +205,14 @@ module.exports = {
         try {
             console.log(req.params);
 
-            const { id }  = req.params;
+            const { id } = req.params;
 
             const validUser = await UserModel.findOne({ _id: id });
-            if(!validUser) {
+            if (!validUser) {
                 return res.status(200).json({ status: 401, message: "User Not Found" });
             }
-            
-            if(validUser) {
+
+            if (validUser) {
                 return res.status(201).json({ status: 201, message: "Valid User", data: validUser });
             } else {
                 return res.status(200).json({ status: 401, message: "Error while vaildating" });
@@ -228,24 +230,24 @@ module.exports = {
             const { id } = req.params;
 
             const { password, token } = req.body;
-            if(!password) {
+            if (!password) {
                 return res.status(200).json({ status: 401, message: "Please enter password" });
             }
             const validUser = await UserModel.findOne({ _id: id, verifytoken: token });
             const validToken = jwt.verify(token, process.env.TOKEN_SECRET);
-            if(!validUser) {
+            if (!validUser) {
                 return res.status(200).json({ status: 401, message: "User Not Found" });
             }
 
-            if(!validToken) {
+            if (!validToken) {
                 return res.status(200).json({ status: 401, message: "Token is not valid" });
             }
 
-            if(validUser && validToken) {
+            if (validUser && validToken) {
                 let newPassword = await bcrypt.hash(password, 10);
                 await UserModel.findByIdAndUpdate({ _id: validUser._id }, { password: newPassword });
 
-                return res.status(201).json({ status: 201, message: "Password updated successfully"});
+                return res.status(201).json({ status: 201, message: "Password updated successfully" });
             } else {
                 return res.status(200).json({ status: 401, message: "Error while vaildating" });
             }
@@ -255,12 +257,12 @@ module.exports = {
         }
     },
 
-    updateUserProfile: async(req, res, next) => {
+    updateUserProfile: async (req, res, next) => {
         try {
             let { name, email } = req.body;
             const user = await UserModel.findById(req.user._id);
 
-            if(user) {
+            if (user) {
                 user.name = name || user.name;
                 user.email = email || user.email;
 

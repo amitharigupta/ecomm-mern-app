@@ -14,6 +14,8 @@ import {
 import Rating from "../components/Rating";
 import Spinner from "../components/Spinner";
 import Message from "../components/Message";
+import Carousel from "react-material-ui-carousel";
+
 
 const ProductDetails = () => {
   let { id } = useParams();
@@ -51,7 +53,15 @@ const ProductDetails = () => {
           </Link>
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              <Carousel>
+              {
+              product.images && product.images.map((item, i) => {
+                // console.log(item);
+                return <Image src={item.url} key={item._id} alt={item._id} fluid />
+              })
+              }
+              </Carousel>
+              
             </Col>
             <Col md={3}>
               <ListGroup variant="flush">
@@ -64,8 +74,8 @@ const ProductDetails = () => {
                     text={`${product.numReviews} Reviews`}
                   />
                 </ListGroupItem>
-                <ListGroupItem>Price : ${product.price}</ListGroupItem>
-                <ListGroupItem>{product.description}</ListGroupItem>
+                <ListGroupItem>Price : ₹ {product.price}</ListGroupItem>
+                <ListGroupItem>Description : {product.description}</ListGroupItem>
               </ListGroup>
             </Col>
             <Col md={3}>
@@ -73,7 +83,9 @@ const ProductDetails = () => {
                 <Row>
                   <Col>Status :</Col>
                   <Col>
-                    {product.countInStock > 0 ? `In Stock` : `Out Of Stock`}
+                    <p className={product.countInStock < 1 ? "text-danger": "text-success"}>
+                      {product.countInStock > 0 ? `In Stock` : `Out Of Stock`}
+                    </p>
                   </Col>
                 </Row>
               </ListGroupItem>

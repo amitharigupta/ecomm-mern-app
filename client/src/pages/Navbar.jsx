@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Nav, NavDropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
+import Search from "../components/Search";
 
 const Navbar = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -32,6 +33,7 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+          <Search />
           <div
             className="collapse navbar-collapse text-uppercase"
             id="navbarColor02"

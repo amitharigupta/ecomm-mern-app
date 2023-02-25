@@ -1,42 +1,56 @@
-import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAILED, USER_LOGOUT, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAILED, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAILED } from "../constants/user.constants";
+import {
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAILED,
+  USER_LOGOUT,
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_SUCCESS,
+  USER_REGISTER_FAILED,
+  USER_DETAILS_REQUEST,
+  USER_DETAILS_SUCCESS,
+  USER_DETAILS_FAILED,
+  USER_LOAD_REQUEST,
+  USER_LOAD_SUCCESS,
+  USER_LOAD_FAILED
+} from "../constants/user.constants";
 
 export const userLoginReducer = (state = {}, action) => {
-    switch (action.type) {
-        case USER_LOGIN_REQUEST:
-            return { loading: true, userInfo: {} };
-        case USER_LOGIN_SUCCESS:
-            return { loading: false, userInfo: action.payload };
-        case USER_LOGIN_FAILED:
-            return { loading: false, error: action.payload };
-        case USER_LOGOUT:
-            return { loading: false, userInfo: null };
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case USER_LOGIN_REQUEST:
+      return { loading: true, userInfo: {} };
+    case USER_LOGIN_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case USER_LOGIN_FAILED:
+      return { loading: false, error: action.payload };
+    case USER_LOGOUT:
+      return { loading: false, userInfo: null };
+    default:
+      return state;
+  }
+};
 
 export const userRegisterReducer = (state = {}, action) => {
-    switch (action.type) {
-        case USER_REGISTER_REQUEST:
-            return { loading: true, userInfo: {} };
-        case USER_REGISTER_SUCCESS:
-            return { loading: false, userInfo: action.payload };
-        case USER_REGISTER_FAILED:
-            return { loading: false, error: action.payload };
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case USER_REGISTER_REQUEST:
+      return { loading: true, userInfo: {} };
+    case USER_REGISTER_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case USER_REGISTER_FAILED:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 export const userDetailsReducer = (state = { user: {} }, action) => {
-    switch (action.type) {
-        case USER_DETAILS_REQUEST:
-            return { ...state, loading: true };
-        case USER_DETAILS_SUCCESS:
-            return { loading: false, userInfo: action.payload };
-        case USER_DETAILS_FAILED:
-            return { loading: false, error: action.payload };
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case USER_DETAILS_REQUEST:
+      return { ...state, loading: true };
+    case USER_DETAILS_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case USER_DETAILS_FAILED:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

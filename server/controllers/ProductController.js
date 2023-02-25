@@ -2,7 +2,7 @@ const ProductModel = require("../models/product.models");
 const BrandModel = require("../models/brand.models");
 const CategoryModel = require("../models/category.models");
 const responseHelper = require("./helper/responseHelper");
-
+const ResultsPerPage = 10;
 // image storage config
 var imgConfig = {
   
@@ -14,6 +14,7 @@ module.exports = {
       const products = await ProductModel.find({});
 
       if (products.length > 0) {
+        console.log(products);
         return res.status(200).json({
           status: 200,
           data: products,
@@ -92,6 +93,48 @@ module.exports = {
 
   updateProduct: async (req, res, next) => {
     try {
+
+      let { brandId, categoryId, name, description, price, countInStock, rating, numReviews } = req.body;
+      let user = req.userId;
+      let productId = req.params.id;
+
+      let productExist = await ProductModel.findById(productId);
+      if(!productExist) {
+        return res.status(404).json(responseHelper.error(404, "Product not found"));
+      }
+
+      let brandExist = await BrandModel.findById(brandId);
+      if(!brandExist) {
+        return res.status(404).json(responseHelper.error(404, "Brand name not found"));
+      }
+
+      let categoryExist = await CategoryModel.findById(categoryId);
+      if(!categoryExist) {
+        return res.status(404).json(responseHelper.error(404, "Category name not found"));
+      }
+
+      if(!name || !price || !description || !price || countInStock < 0 ) {
+        return res.status(404).json(responseHelper.error(404, "Enter correct product details"));
+      }
+
+      let images = [];
+
+      if(typeof req.body.images === "string") {
+        images.push(req.body.images);
+      } else {
+        images = req.body.images;
+      }
+      
+      let updateProduct = await ProductModel.findByIdAndUpdate({ _id : productId}, { ...req.body, user });
+
+      console.log(updateProduct);
+
+      if(updateProduct) {
+        return res.status(201).json(responseHelper.successWithResult(201, "Product Created Successfully", updateProduct));
+      } else {
+        return res.status(401).json(responseHelper.error(401, "Error while creating product"));
+      }
+
     } catch (error) {
       console.log(error);
       return res

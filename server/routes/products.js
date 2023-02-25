@@ -10,7 +10,7 @@ router.get("/:id", ProductController.getProductById);
 
 router.post("/", authMiddleWare.isUserAdminLogin, ProductController.createProduct);
 
-router.patch("/", ProductController.updateProduct);
+router.patch("/:id", ProductController.updateProduct);
 
 router.delete("/:id", ProductController.deleteProductById);
 

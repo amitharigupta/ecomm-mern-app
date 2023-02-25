@@ -9,7 +9,7 @@ const Products = ({product}) => {
         <div className="card my-3 p-1">
             <div className="card-body">
                 <NavLink to={`/product/${product._id}`}>
-                    <Card.Img src={product.image} variant="top" />
+                    <Card.Img src={product.images[0].url} alt={product.name} variant="top" />
                 </NavLink>
                 <div className='p-1'>
                     <NavLink to={`/product/${product._id}`}>
@@ -21,7 +21,7 @@ const Products = ({product}) => {
                         {/* {product.rating} from {product.numReviews} reviews */}
                     </div>
                     <div className="my-3">
-                        INR - {product.price}
+                        ₹ {product.price}
                     </div>
                 </div>
             </div>          
