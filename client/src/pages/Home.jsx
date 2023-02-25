@@ -15,6 +15,7 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 100000]);
   const [categoryId, setCategoryId] = useState("");
+  const [ratings, setRatings] = useState(0);
 
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productList);
@@ -36,8 +37,8 @@ const Home = () => {
 
   const setCategory = (e) => {
     // console.log(e.target.value);
-    setCategoryId(e.target.value)
-  }
+    setCategoryId(e.target.value);
+  };
 
   const priceHandler = (event, newPrice) => {
     setPrice(newPrice);
@@ -57,6 +58,66 @@ const Home = () => {
       ) : (
         <>
           <Row>
+            <Col md={4}>
+              {/* Price Filter */}
+              <Typography>Price</Typography>
+              <Slider
+                value={price}
+                onChange={priceHandler}
+                valueLabelDisplay="auto"
+                aria-labelledby="range-slider"
+                min={0}
+                max={50000}
+              />
+            </Col>
+            <Col md={4}>
+              {/* Category Filter */}
+              <div className="row categoryBox">
+                <div className="col-md-3 Categories">
+                  <Typography>Categories</Typography>
+                  <select
+                    className="form-select"
+                    onChange={(e) => setCategory(e)}
+                    style={{ width: "14rem"}}
+                  >
+                    <option value={""}>Select Category</option>
+                    {categories.map((i) => {
+                      return (
+                        <>
+                          <option
+                            className="category-link"
+                            key={i._id}
+                            value={i._id}
+                          >
+                            {i.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+            </Col>
+
+            <Col md={4}>
+              {/* Rating Filter */}
+              <fieldset>
+                <Typography component={"legend"}>Ratings Above</Typography>
+                <Slider
+                  value={ratings}
+                  onChange={(e, newRating) => {
+                    setRatings(newRating);
+                  }}
+                  aria-labelledby="continuous-slider"
+                  valueLabelDisplay="auto"
+                  min={0}
+                  max={5}
+                ></Slider>
+              </fieldset>
+            </Col>
+          </Row>
+
+          <Row>
             {products.map((product) => {
               return (
                 <>
@@ -67,36 +128,6 @@ const Home = () => {
               );
             })}
           </Row>
-
-          <div className="row filterBox">
-            <div className="col-md-12">
-              <Typography>Price</Typography>
-              <Slider
-                value={price}
-                onChange={priceHandler}
-                valueLabelDisplay="auto"
-                aria-labelledby="range-slider"
-                min={0}
-                max={50000}
-              />
-            </div>
-          </div>
-          <div className="row categoryBox">
-            <div className="col-md-3 Categories">
-              <Typography>Categories</Typography>
-              <select className="categoryBox" onChange={(e) => setCategory(e) }>
-                {
-                  categories.map((i) => {
-                    return <>
-                      <option className="category-link" key={i._id} value={i._id} >
-                        {i.name}
-                      </option>
-                    </>
-                  })
-                }
-              </select>
-            </div>
-          </div>
 
           {resultPerPage < productsCount && (
             <div className="pagination">
