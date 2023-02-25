@@ -22,7 +22,7 @@ function App() {
     <>
       <Header />
       <main>
-        <Container className="mt-3">
+        <Container className="mt-4">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/product/:id" element={<ProductDetails />} />

@@ -2,7 +2,7 @@ const ProductModel = require("../models/product.models");
 const BrandModel = require("../models/brand.models");
 const CategoryModel = require("../models/category.models");
 const responseHelper = require("./helper/responseHelper");
-const ResultsPerPage = 10;
+const ResultsPerPage = 4;
 
 // image storage config
 var imgConfig = {
@@ -12,15 +12,16 @@ var imgConfig = {
 module.exports = {
   getAllProducts: async (req, res, next) => {
     try {
-      const Page = Math.max(0, req.params.page)
-      const products = await ProductModel.find({}).limit(ResultsPerPage).skip(ResultsPerPage * Page).sort({});
+      const Page = Math.max(0, req.query.page);
+      const productsCount = await ProductModel.find().count();
+      const products = await ProductModel.find({}).limit(ResultsPerPage).skip((ResultsPerPage * Page ) - ResultsPerPage).sort({ "createdAt": "desc"});
 
       if (products.length > 0) {
         // console.log(products);
         return res.status(200).json({
           status: 200,
           data: { products, 
-          productsCount: products.length, 
+          productsCount: productsCount, 
           resultPerPage: ResultsPerPage},
           message: "Products fetched successfully",
         });

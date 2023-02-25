@@ -10,10 +10,14 @@ import {
 
 import { BACKEND_API_URL } from "../constants/backend.constants";
 
-export const productList = () => async (dispatch) => {
+export const productList = (currentPage = 1, price = [0, 25000], categoryId) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get(BACKEND_API_URL + `/products/all`);
+    let URL = BACKEND_API_URL + `/products/all?page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`;
+    if(categoryId && categoryId != "") {
+      URL = BACKEND_API_URL + `/products/all?page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&categoryId=${categoryId}`
+    }
+    const { data } = await axios.get(URL);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data.data,
