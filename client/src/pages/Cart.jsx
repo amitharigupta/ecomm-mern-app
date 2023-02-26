@@ -11,11 +11,12 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import { addToCart, removeFromCart } from "../actions/cartActions";
-import { useParams, useSearchParams, Link } from "react-router-dom";
+import { useParams, useSearchParams, Link, useNavigate } from "react-router-dom";
 import Message from "../components/Message";
 import "../styles/Cart.css";
 
 const Cart = ({ match }) => {
+  const history = useNavigate();
   let { id: productId } = useParams();
 
   const [searchParams] = useSearchParams();
@@ -55,8 +56,8 @@ const Cart = ({ match }) => {
     dispatch(removeFromCart(id));
   };
 
-  const checkout = () => {
-    history.push("/login?redirect=shipping");
+  const checkoutHandler = () => {
+    history("/login?redirect=shipping");
   };
 
   return (
@@ -140,7 +141,7 @@ const Cart = ({ match }) => {
                 type="button"
                 className="btn-block"
                 disabled={cartItems.length === 0}
-                onClick={checkout}
+                onClick={checkoutHandler}
               >
                 Proceed to checkOut
               </Button>

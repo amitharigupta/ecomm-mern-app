@@ -18,11 +18,12 @@ const Login = () => {
   
   const { loading, error, userInfo } = userLogin;
 
+  // let redirect = location.search ? location.search.split("=")[1] : "/";
   useEffect(() => {
     if(userInfo) {
       setInpVal({ ...inpVal, email: "", password: "" });
       Toast.success("User logged in scuccessfully");
-      history('/');
+      history("/");
     }
   }, [history, userInfo]);
 
@@ -35,7 +36,6 @@ const Login = () => {
     const {name, value} = e.target;
     setInpVal(() => { return { ...inpVal, [name]: value } });
   }
-
 
   const loginUserData = async (e) => {
     e.preventDefault();
@@ -50,23 +50,7 @@ const Login = () => {
     } else if (password.length < 6) {
       Toast.error("Password must be 6 char");
     } else {
-      dispatch(login(email, password))
-      // let response = await fetch(BACKEND_API_URL + '/users/login', {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify(inpVal)
-      // });
-      // let data  = await response.json();
-      // if(data.status === 200 || data.status === 201) {
-      //   localStorage.setItem("token", data.data.token);
-      //   history('/dashboard');
-      //   setInpVal({ ...inpVal, email: "", password: "" });
-      //   Toast.success(data.message);
-      // } else {
-      //   Toast.error(data.message);
-      // }
+      dispatch(login(email, password));
     }
   }
 

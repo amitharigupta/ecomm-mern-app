@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product.jsx";
 import Search from "./components/Search.jsx";
+import Shipping from "./components/Shipping.jsx";
 
 import PasswordReset from "./components/PasswordReset";
 import ForgotPassword from "./components/ForgotPassword";
@@ -34,6 +35,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/product" element={<Product />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/shipping" element={<Shipping />} />
           </Routes>
         </Container>
       </main>
