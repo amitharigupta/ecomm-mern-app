@@ -10,12 +10,12 @@ import {
 
 import { BACKEND_API_URL } from "../constants/backend.constants";
 
-export const productList = (currentPage = 1, price = [0, 25000], categoryId) => async (dispatch) => {
+export const productList = (currentPage = 1, price = [0, 25000], categoryId, ratings = 0) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    let URL = BACKEND_API_URL + `/products/all?page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`;
+    let URL = BACKEND_API_URL + `/products/all?page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
     if(categoryId && categoryId != "") {
-      URL = BACKEND_API_URL + `/products/all?page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&categoryId=${categoryId}`
+      URL = BACKEND_API_URL + `/products/all?page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&categoryId=${categoryId}`;
     }
     const { data } = await axios.get(URL);
     dispatch({

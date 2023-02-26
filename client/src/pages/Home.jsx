@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [price, setPrice] = useState([0, 100000]);
+  const [price, setPrice] = useState([0, 50000]);
   const [categoryId, setCategoryId] = useState("");
   const [ratings, setRatings] = useState(0);
 
@@ -24,7 +24,7 @@ const Home = () => {
   const { loading, error, products, productsCount, resultPerPage } = product;
   const { categories } = category;
   const fetchProducts = async () => {
-    dispatch(productList(currentPage, price, categoryId));
+    dispatch(productList(currentPage, price, categoryId, ratings));
   };
 
   const fetchCategorys = async () => {
@@ -47,7 +47,7 @@ const Home = () => {
   useEffect(() => {
     fetchProducts();
     fetchCategorys();
-  }, [dispatch, currentPage, price, categoryId]);
+  }, [dispatch, currentPage, price, categoryId, ratings]);
 
   return (
     <>
@@ -116,7 +116,7 @@ const Home = () => {
               </fieldset>
             </Col>
           </Row>
-
+          {/* Products List */}
           <Row>
             {products.map((product) => {
               return (
@@ -128,7 +128,7 @@ const Home = () => {
               );
             })}
           </Row>
-
+          {/* Pagination */}
           {resultPerPage < productsCount && (
             <div className="pagination">
               <Pagination

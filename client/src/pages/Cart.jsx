@@ -1,26 +1,54 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux"
-import { Row, Col, Form, Button, Card, Image, ListGroup, ListGroupItem } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  Image,
+  ListGroup,
+  ListGroupItem,
+} from "react-bootstrap";
 import { addToCart, removeFromCart } from "../actions/cartActions";
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import Message from "../components/Message";
+import "../styles/Cart.css";
 
 const Cart = ({ match }) => {
   let { id: productId } = useParams();
 
   const [searchParams] = useSearchParams();
-  let qty = searchParams.get('qty');
+  let qty = searchParams.get("qty");
 
   const dispatch = useDispatch();
 
+  const increaseQuantity = (id, quantity, stock) => {
+    console.log(id, quantity, stock);
+    const newQty = +quantity + 1;
+    if (stock <= quantity) {
+      return;
+    }
+    dispatch(addToCart(id, newQty));
+  };
+
+  const decreaseQuantity = (id, quantity) => {
+    console.log(id, quantity);
+    const newQty = +quantity - 1;
+    if (1 >= quantity) {
+      return;
+    }
+    dispatch(addToCart(id, newQty));
+  };
+
   useEffect(() => {
-    if(productId) {
+    if (productId) {
       dispatch(addToCart(productId, qty));
     }
-  }, [dispatch, productId, qty])
+  }, [dispatch, productId, qty]);
 
-  const cart = useSelector(state => state.cart);
-  const { cartItems } = cart; 
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
   // console.log(cartItems);
 
   const removeFromCartHandler = (id) => {
@@ -42,46 +70,56 @@ const Cart = ({ match }) => {
             </Message>
           ) : (
             <ListGroup variant="flush">
-              {cartItems.map((item, id) => (
-                <ListGroupItem key={id}>
-                  <Row>
-                    <Col md={2}>
-                      <Image src={item.image} alt={item.name} fluid rounded />
-                    </Col>
-                    <Col md={3}>
-                      <Link to={`/product/${item.product}`}>{item.name}</Link>
-                    </Col>
-                    <Col md={2}>${item.price}</Col>
-                    <Col md={2}>
-                      <Form.Control
-                        as="select"
-                        value={item.qty}
-                        onChange={(e) =>
-                          dispatch(
-                            addToCart(item.product, Number(e.target.value))
-                          )
-                        }
-                      >
-                        {[...Array(item.countInStock).keys()].map((x) => (
-                          <option key={x + 1} value={x + 1}>
-                            {x + 1}
-                          </option>
-                        ))}
-                      </Form.Control>
-                      <Button
-                        type="button"
-                        variant="light"
-                        onClick={() => removeFromCartHandler(item.product)}
-                      >
-                        <i
-                          className="fa fa-trash text-danger"
-                          aria-hidden="true"
-                        ></i>
-                      </Button>
-                    </Col>
-                  </Row>
-                </ListGroupItem>
-              ))}
+              {cartItems &&
+                cartItems.map((item, id) => (
+                  <ListGroupItem key={id}>
+                    <Row>
+                      <Col md={2}>
+                        <Image
+                          src={item.image.url}
+                          alt={item.name}
+                          fluid
+                          rounded
+                        />
+                      </Col>
+                      <Col md={3}>
+                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                      </Col>
+                      <Col md={2}>₹ {item.price}</Col>
+                      <Col md={2} className={"cartInput"}>
+                        <button
+                          onClick={() => {
+                            decreaseQuantity(item.product, item.qty);
+                          }}
+                        >
+                          -
+                        </button>
+                        <input type="number" value={item.qty} readOnly />
+                        <button
+                          onClick={() => {
+                            increaseQuantity(
+                              item.product,
+                              item.qty,
+                              item.stock
+                            );
+                          }}
+                        >
+                          +
+                        </button>
+                        <Button
+                          type="button"
+                          variant="light"
+                          onClick={() => removeFromCartHandler(item.product)}
+                        >
+                          <i
+                            className="fa fa-trash text-danger"
+                            aria-hidden="true"
+                          ></i>
+                        </Button>
+                      </Col>
+                    </Row>
+                  </ListGroupItem>
+                ))}
             </ListGroup>
           )}
         </Col>
@@ -90,10 +128,10 @@ const Cart = ({ match }) => {
             <ListGroup variant="flush">
               <ListGroupItem>
                 <h2>
-                  subtotal ({cartItems.reduce((acc, item) => acc + (+item.qty), 0)}
-                  ) items
+                  subtotal (
+                  {cartItems.reduce((acc, item) => acc + +item.qty, 0)}) items
                 </h2>
-                $
+                ₹ &nbsp;
                 {cartItems
                   .reduce((acc, item) => acc + item.qty * item.price, 0)
                   .toFixed(2)}
@@ -111,7 +149,7 @@ const Cart = ({ match }) => {
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;
