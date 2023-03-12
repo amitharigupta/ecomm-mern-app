@@ -8,6 +8,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 
 import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/route/ProtectedRoute";
+
 import ProductDetails from "./pages/ProductDetails";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
@@ -17,13 +19,14 @@ import Shipping from "./components/Shipping.jsx";
 
 import PasswordReset from "./components/PasswordReset";
 import ForgotPassword from "./components/ForgotPassword";
+import Dashboard from "./components/admin/Dashboard";
 
 function App() {
   return (
     <>
       <Header />
       <main>
-        <Container className="mt-4">
+        <Container className="mt-4 mb-2">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/product/:id" element={<ProductDetails />} />
@@ -36,6 +39,7 @@ function App() {
             <Route path="/product" element={<Product />} />
             <Route path="/search" element={<Search />} />
             <Route path="/shipping" element={<Shipping />} />
+            <ProtectedRoute isAdmin={true} exact path="/admin/dashboard" component={Dashboard} />
           </Routes>
         </Container>
       </main>

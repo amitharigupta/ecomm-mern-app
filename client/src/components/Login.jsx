@@ -13,18 +13,23 @@ const Login = () => {
   // Dispatch
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin );
-
-  // console.log(userLogin);
   
   const { loading, error, userInfo } = userLogin;
+  // console.log('Logged in user data : ', userLogin);
 
   // let redirect = location.search ? location.search.split("=")[1] : "/";
   useEffect(() => {
-    if(userInfo) {
-      setInpVal({ ...inpVal, email: "", password: "" });
-      Toast.success("User logged in scuccessfully");
-      history("/");
-    }
+      if(userLogin && userInfo && userInfo.isAdmin === false) {
+        setInpVal({ ...inpVal, email: "", password: "" });
+        Toast.success("User logged in scuccessfully");
+        history("/");
+      } else if(userLogin && userInfo && userInfo.isAdmin) {
+        setInpVal({ ...inpVal, email: "", password: "" });
+        Toast.success("Admin logged in scuccessfully");
+        history("/admin/dashboard");
+      } else {
+        history("/login");
+      }
   }, [history, userInfo]);
 
   const [inpVal, setInpVal] = useState({

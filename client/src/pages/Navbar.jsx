@@ -39,33 +39,31 @@ const Navbar = () => {
             id="navbarColor02"
           >
             <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/">
-                  <i className="fa-solid fa-house"></i> Home
-                </NavLink>
-              </li>
-              {
-                userInfo?.isAdmin === true ? (
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/product">
-                  <i className="fa-brands fa-product-hunt"></i> Product
-                </NavLink>  
-              </li>
-                ) : (
-                  <></>
-                )
-              }
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/cart">
-                  <i className="fa-solid fa-cart-shopping"></i> Cart
-                </NavLink>
-              </li>
+              {userInfo?.isAdmin === true ? (
+                <></>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/">
+                      <i className="fa-solid fa-house"></i> Home
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/cart">
+                      <i className="fa-solid fa-cart-shopping"></i> Cart
+                    </NavLink>
+                  </li>
+                </>
+              )}
+
               {userInfo ? (
                 <NavDropdown title={userInfo.name}>
                   <NavLink to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </NavLink>
-                  <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
                 </NavDropdown>
               ) : (
                 <>
